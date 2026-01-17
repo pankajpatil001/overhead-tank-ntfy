@@ -44,6 +44,7 @@ bool connection = LOW, firstTime = HIGH, smart = HIGH, waterLevel = LOW, valveSt
 char SERVER[16] = "io.adafruit.com";
 uint8_t wifiReconnectAttemptCount=0;
 const char* firmwareURL = "https://github.com/pankajpatil001/overhead-tank-ntfy/raw/refs/heads/master/firmwares/nodemcuv2.bin";
+
 bool wifiConnected = LOW;
 // Parameters from initial setup
 char testParam[TEMP_PARAM_SIZE];

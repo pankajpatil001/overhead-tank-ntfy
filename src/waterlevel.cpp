@@ -78,18 +78,6 @@ uint16_t filteredAvgWaterLevel(uint16_t dly, uint8_t sample, uint8_t tolerance =
 
 void getMainTankWaterLevel() {
     if (millis() - tkeepWaterLevel > waterLevelTime) {
-        // digitalWrite(trigPin, LOW);
-        // delayMicroseconds(2); 
-
-        // digitalWrite(trigPin, HIGH); // turn on the Trigger to generate pulse
-        // delayMicroseconds(10); // keep the trigger "ON" for 10 ms to generate pulse
-        // digitalWrite(trigPin, LOW); // Turn off the pulse trigger to stop pulse
-
-        // // If pulse reached the receiver echoPin
-        // // become high Then pulseIn() returns the
-        // // time taken by the pulse to reach the receiver
-        // unsigned long duration = pulseIn(echoPin, HIGH);
-        // unsigned int waterLevelCM = duration * 0.0344 / 2; 
 
         unsigned int avgWaterLevelCM = filteredAvgWaterLevel(50, 20, 3, 8); // 50ms delay for the sensor to stabilize
 

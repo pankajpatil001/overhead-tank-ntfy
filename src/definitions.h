@@ -6,8 +6,6 @@
 #include "callback.h"
 #include "publish.h"
 #include "connectSubscribe.h"
-// #include "temperature.h"
-// #include "coolerWater.h"
 #include "waterlevel.h"
 #include "defines.h"
 

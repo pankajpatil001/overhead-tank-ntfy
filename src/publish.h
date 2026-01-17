@@ -6,17 +6,11 @@
 #include "defines.h"
 // #include "temperature.h"
 
-extern unsigned long tkeepMainTankLevel, tkeepRssi, tkeepLight;//, tkeepHum, tkeepUSpub;
-extern unsigned int rssiTime, mainTankLevelTime, mainTankWaterLevel;//, lightTime, humTime, lightinty, uspubTime;
-// extern unsigned int prevLightinty;
-// extern unsigned int doorTime = 1000, pirTime = 1000, usTime = 2000, uspubTime = 10000, buzzTime = 5000;
-// extern float temp;//, hum, prevTemp, prevHum;
-// extern bool firstTime, coolerState;//, pirState, doorState, connection, lightStatus;
+extern unsigned long tkeepMainTankLevel, tkeepRssi;
+extern unsigned int rssiTime, mainTankLevelTime, mainTankWaterLevel;
 extern PubSubClient client;
 extern char valueStr[100];
-// extern unsigned int distance, prevDistance;
 extern bool serial;
-
 
 void publishFeeds();
 

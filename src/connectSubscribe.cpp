@@ -17,10 +17,10 @@ void connectSubscribe(){
         if(serial) Serial.println("connected");
         // ... and resubscribe
         Serial.println("Subscribing again...");
-        Serial.println(PREAMBLE ON_TIME);
-        Serial.println(PREAMBLE OFF_TIME);
-        if (client.subscribe(PREAMBLE ON_TIME, 1)) Serial.println("Subscribed to ON Time");
-        if (client.subscribe(PREAMBLE OFF_TIME, 1)) Serial.println("Subscribed to OFF Time");
+        // Serial.println(PREAMBLE ON_TIME);
+        // Serial.println(PREAMBLE OFF_TIME);
+        // if (client.subscribe(PREAMBLE ON_TIME, 1)) Serial.println("Subscribed to ON Time");
+        // if (client.subscribe(PREAMBLE OFF_TIME, 1)) Serial.println("Subscribed to OFF Time");
         // client.subscribe(PREAMBLE OFF_TIME, 1);
   
         delay(1);

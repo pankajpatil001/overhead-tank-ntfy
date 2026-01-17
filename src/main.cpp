@@ -13,6 +13,9 @@ void setup() {
 
   client.setServer(SERVER, SERVERPORT);
   client.setCallback(callback);
+
+  setupHTTPRoutes();
+  startHTTPServer(); // Start the HTTP server after WiFi connection
   sendNtfyMessage(NTFY_TOPIC, STARTUP_NTFN);
 }
 

@@ -4,7 +4,7 @@ void publishFeeds(){
     
   //------------------------RSSI-----------------------------
   if (millis() - tkeepRssi > rssiTime && client.connected()) {
-    String str = "Overhead Tank Monitor Device IP "; 
+    String str = "Test Overhead Tank Monitor Device IP "; 
     str+= WiFi.localIP().toString();
     str+= ", RSSI ";
     str+= (String)WiFi.RSSI();
@@ -24,6 +24,20 @@ void publishFeeds(){
     tkeepMainTankLevel = millis();
   }
 
+  if (millis() - tkeepNtfy > ntfyTime && client.connected() && ((mainTankWaterLevel < ntfyLowerThreshold) || (mainTankWaterLevel > ntfyUpperThreshold))) {
+    String str = "";
+    str += "Tank level is " + (String)mainTankWaterLevel + "%.";
+    if (mainTankWaterLevel < ntfyLowerThreshold) {
+      str += "\nPlease turn motor ON.";
+    } else if (mainTankWaterLevel > ntfyUpperThreshold) {
+      str += "\nPlease turn motor OFF.";
+    }
+    // String str = (String)mainTankWaterLevel;
+    str.toCharArray(valueStr, 120);
+    Serial.println(str);
+    sendNtfyMessage(NTFY_TOPIC, valueStr);
+    tkeepNtfy = millis();
+  }
   // if (client.connected() && firstTime && coolerState) {
   //   String str = "ON";
   //   str.toCharArray(valueStr, 10);

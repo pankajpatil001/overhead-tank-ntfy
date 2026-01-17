@@ -7,6 +7,7 @@
 #include "publish.h"
 #include "connectSubscribe.h"
 #include "waterlevel.h"
+#include "ntfy.h"
 #include "defines.h"
 
 //--------------------Ultrasonic---------------------
@@ -16,9 +17,11 @@ unsigned int mainTankWaterLevel=0, prevMainTankWaterLevel=0, mainTankLevelTime=1
 
 //-----------------------
 unsigned long tkeepTemp=1000, tkeepRssi=6000, tkeepLight=2000, tkeepchkTemp = 3000, tkeepWaterLevel = 5000, waterLevelTime = 3000, waterLevelTimeHigh = 600000, waterLevelTimeLow = 10000;
+unsigned int ntfyLowerThreshold = 12, ntfyUpperThreshold = 93;
+unsigned long tkeepNtfy = 2000, ntfyTime = 30 * 60 * 1000; // notify every 30 minutes on crossing threshold
 // unsigned long tkeepUS = 500, tkeepUSpub = 1500, tkeepHum = 4000, tBuzz = 0;
 unsigned long tgetLight = 5000, tkeepConnect=0;//, tkeepDoor=1000, tkeepPIR=1500;
-unsigned int rssiTime = 3000, tempTime = 120000;//, lightTime = 10000, humTime = 10000, lightinty = 0;
+unsigned int rssiTime = 30000, tempTime = 120000;//, lightTime = 10000, humTime = 10000, lightinty = 0;
 unsigned int connectTime = 5000, chkTempTime = 1000;//, dhtTime = 3000, getLight = 5000;
 // unsigned int doorTime = 1000, pirTime = 1000, usTime = 2000, uspubTime = 10000, buzzTime = 5000;
 
@@ -43,7 +46,8 @@ bool connection = LOW, firstTime = HIGH, smart = HIGH, waterLevel = LOW, valveSt
 //-----------------------------------------------------------------------------------------------
 char SERVER[16] = "io.adafruit.com";
 uint8_t wifiReconnectAttemptCount=0;
-const char* firmwareURL = "https://github.com/pankajpatil001/overhead-tank-ntfy/raw/refs/heads/master/firmwares/nodemcuv2.bin";
+// const char* firmwareURL = "https://github.com/pankajpatil001/overhead-tank-ntfy/raw/refs/heads/master/firmwares/nodemcuv2.bin";
+const char* firmwareURL = "https://raw.githubusercontent.com/pankajpatil001/overhead-tank-ntfy/master/firmwares/nodemcuv2.bin";
 
 bool wifiConnected = LOW;
 // Parameters from initial setup
@@ -137,6 +141,8 @@ const char* serverIndex =
  "</script>";
 
 WiFiClient wificlient;
+WiFiClientSecure wificlientsecure;
+HTTPClient rpihttp; //HTTP client for RPI server
 // create MQTT object
 PubSubClient client(wificlient);
 const char* host = "test-device";

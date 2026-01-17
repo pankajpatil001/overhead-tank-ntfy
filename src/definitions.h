@@ -41,7 +41,14 @@ float temp = 0;//, hum = 0, prevTemp = 0, prevHum = 0;
 // //--------------------------------------------------------------------------------
 bool connection = LOW, firstTime = HIGH, smart = HIGH, waterLevel = LOW, valveStatus = LOW, coolerState = LOW;//, doorState = LOW, lightStatus = LOW;
 //-----------------------------------------------------------------------------------------------
-
+char SERVER[16] = "io.adafruit.com";
+uint8_t wifiReconnectAttemptCount=0;
+const char* firmwareURL = "https://raw.githubusercontent.com/pankajpatil001/overhead-tank-ntfy/master/firmwares/nodemcuv2.bin";
+bool wifiConnected = LOW;
+// Parameters from initial setup
+char testParam[TEMP_PARAM_SIZE];
+unsigned long lastReconnectAttempt=0;
+bool configFreshlySaved;
 //-----------------------------Webupdater---------------------------------
 
 const char* loginIndex =
@@ -134,7 +141,7 @@ PubSubClient client(wificlient);
 const char* host = "test-device";
 bool serial = HIGH;
 
-ESP8266WiFiMulti wifiMulti;
+// ESP8266WiFiMulti wifiMulti;
 ESP8266WebServer httpServer(80); //Choose any number you want, just add this after your ip adrs
 ESP8266HTTPUpdateServer httpUpdater; //http://<local-ip>:<any-number>/ as server address
 

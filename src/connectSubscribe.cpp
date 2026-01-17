@@ -3,25 +3,63 @@
 void connectSubscribe(){
   if (!client.connected() && millis() - tkeepConnect > connectTime) {
     if (WiFi.status() != WL_CONNECTED) {
-      if(serial) Serial.println("Connecting to WiFi!");
-      wifiMulti.run();
-      delay(1000);
-      c++;
-      if(c>20) ESP.restart();
+
+      if (wifiConnected) {
+        Serial.println("⚠️ WiFi lost!");
+        wifiConnected = false;
+        lastReconnectAttempt = millis();
+      }
+
+      // Try to reconnect every 10 seconds
+      if (millis() - lastReconnectAttempt > 10000) {
+        Serial.println("🔄 Attempting WiFi reconnect...");
+        WiFi.reconnect();
+        lastReconnectAttempt = millis();
+      }
+      // wifiMulti.run();
+      // delay(1000);
+      wifiReconnectAttemptCount++;
+      if(wifiReconnectAttemptCount>5) {
+        if (serial) Serial.println("WiFi reconnect failed. Restarting...");
+        delay(1000);
+        ESP.restart();
+      }
     }
     else {
-      c=0;
-      if(serial) Serial.println("Attempting MQTT connection...");
+      wifiReconnectAttemptCount=0;
+      if(serial) {
+        Serial.println("Attempting MQTT connection...");
+        Serial.print("MQTT Server: ");
+        Serial.println(SERVER);
+        Serial.print("MQTT Username: ");
+        Serial.println(MQTT_USERNAME);
+        Serial.print("MQTT Key: ");
+        Serial.println(MQTT_KEY);
+      }
       // Attempt to connect
-      if (client.connect("pankaj", MQTT_USERNAME, MQTT_KEY)) {
+      // if (client.connect("", ADA_USER_NAME, ADA_ACC_KEY)) {
+      if (client.connect("", MQTT_USERNAME, MQTT_KEY)) {
         if(serial) Serial.println("connected");
         // ... and resubscribe
-        Serial.println("Subscribing again...");
-        // Serial.println(PREAMBLE ON_TIME);
-        // Serial.println(PREAMBLE OFF_TIME);
-        // if (client.subscribe(PREAMBLE ON_TIME, 1)) Serial.println("Subscribed to ON Time");
-        // if (client.subscribe(PREAMBLE OFF_TIME, 1)) Serial.println("Subscribed to OFF Time");
-        // client.subscribe(PREAMBLE OFF_TIME, 1);
+        // Serial.println(ON_TIME);
+        // Serial.println(OFF_TIME);
+        // char onTopic[MQTT_USERNAME_SIZE + FEED_SIZE + 2]; // +2 FOR / AND \0
+        // strcpy(onTopic, MQTT_USERNAME);
+        // strcat(onTopic, "/");
+        // strcat(onTopic, onTimeFeed);
+        // Serial.print("Topic name: ");
+        // Serial.println(onTopic);
+        // char offTopic[MQTT_USERNAME_SIZE + FEED_SIZE + 2]; // +2 FOR / AND \0
+        // strcpy(offTopic, MQTT_USERNAME);
+        // strcat(offTopic, "/");
+        // strcat(offTopic, offTimeFeed);
+        // Serial.print("Topic name: ");
+        // Serial.println(offTopic);
+        // client.subscribe(onTopic, 1);
+        // client.subscribe(offTopic, 1);
+        // client.subscribe("Umeshp99/feeds/on-time", 1);
+        // client.subscribe("Umeshp99/feeds/off-time", 1);
+        // client.subscribe("patilect/feeds/+", 1);
   
         delay(1);
         connection = HIGH;
@@ -37,28 +75,15 @@ void connectSubscribe(){
   }
 }
 
-
-// void getFeedLatest(){
-//   client.publish(PREAMBLE LIGHTS GETLATEST, "\0");
-//   delay(1);
-//   client.publish(PREAMBLE ALARM GETLATEST, "\0");
-//   delay(1);
-//   client.publish(PREAMBLE BROODER GETLATEST, "\0");
-//   delay(1);
-//   client.publish(PREAMBLE MOTOR GETLATEST, "\0");
-//   delay(1);
-// }
-
 void checkConnection(){
     //----Connection LED-----
   if(client.connected() && connection == LOW) {
-    c=0;
-    // digitalWrite(LED, LOW); //Connected
+    wifiReconnectAttemptCount=0;
+    digitalWrite(LED, LOW); //Connected
     connection = HIGH;
   }
   else if(!client.connected() && connection == HIGH){
-    // digitalWrite(LED, HIGH); //Not Connected
-    Serial.println("Not connected.");
+    digitalWrite(LED, HIGH); //Not Connected
     connection = LOW;
   }
   //-----------------------

@@ -54,5 +54,6 @@ void WiFi_httpStuff();
 // void saveConfig();
 void startHTTPServer();
 void setupHTTPRoutes();
+void sendNtfyMessage(const String& topic, const String& message);
 
 #endif

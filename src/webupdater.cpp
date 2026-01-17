@@ -241,9 +241,6 @@ void WiFi_httpStuff(){
 
   httpUpdater.setup(&httpServer);
   
-  // httpServer.begin(); // this is not needed here
-  
-  // MDNS.addService("http", "tcp", 80);
   if(!wifiConnected && WiFi.status() == WL_CONNECTED) {
       wifiConnected = true;
       if(serial) Serial.println("WiFi connected...!!!");
@@ -256,5 +253,39 @@ void WiFi_httpStuff(){
   }
   else {
     if(serial) Serial.println("WiFi not connected...!!!");
+  }
+}
+
+void sendNtfyMessage(const String& topic, const String& message) {
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WiFi not connected");
+    return;
+  }
+
+  WiFiClientSecure client;
+  client.setInsecure();  // ntfy.sh uses HTTPS
+
+  HTTPClient https;
+
+  String url = "https://ntfy.sh/" + topic;
+  Serial.println("POST -> " + url);
+
+  if (https.begin(client, url)) {
+    https.addHeader("Content-Type", "text/plain");
+
+    int httpCode = https.POST(message);
+
+    if (httpCode > 0) {
+      Serial.printf("HTTP Code: %d\n", httpCode);
+      Serial.println("Response:");
+      Serial.println(https.getString());
+    } else {
+      Serial.printf("POST failed: %s\n",
+        https.errorToString(httpCode).c_str());
+    }
+
+    https.end();
+  } else {
+    Serial.println("HTTPS begin failed");
   }
 }

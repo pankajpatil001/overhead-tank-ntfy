@@ -13,6 +13,7 @@ void setup() {
 
   client.setServer(SERVER, SERVERPORT);
   client.setCallback(callback);
+  sendNtfyMessage(NTFY_TOPIC, STARTUP_NTFN);
 }
 
 //

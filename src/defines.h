@@ -37,6 +37,9 @@
 #define EEPROM_SIZE       512 //Size of EEPROM in bytes
 #define TEMP_PARAM_SIZE   32
 #define TEST_PARAM_ADDR   0
+
+#define NTFY_TOPIC        "patilect-overhead-tank-2025"
+#define STARTUP_NTFN      "Overhead tank sensor is starting up..."
 // #define LUMINOSITY        "sensor/luminosity"
 // #define FAN               "fan"
 // // #define BROODER           "device/brooder"

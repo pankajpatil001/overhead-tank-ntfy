@@ -17,7 +17,7 @@ unsigned int mainTankWaterLevel=0, prevMainTankWaterLevel=0, mainTankLevelTime=1
 
 //-----------------------
 unsigned long tkeepTemp=1000, tkeepRssi=6000, tkeepLight=2000, tkeepchkTemp = 3000, tkeepWaterLevel = 5000, waterLevelTime = 3000, waterLevelTimeHigh = 600000, waterLevelTimeLow = 10000;
-unsigned int ntfyLowerThreshold = 12, ntfyUpperThreshold = 93;
+unsigned int ntfyLowerThreshold = 12, ntfyUpperThreshold = 85;
 unsigned long tkeepNtfy = 2000, ntfyTime = 30 * 60 * 1000; // notify every 30 minutes on crossing threshold
 // unsigned long tkeepUS = 500, tkeepUSpub = 1500, tkeepHum = 4000, tBuzz = 0;
 unsigned long tgetLight = 5000, tkeepConnect=0;//, tkeepDoor=1000, tkeepPIR=1500;
